@@ -30,16 +30,16 @@ ADB is **bundled** in the `adb/` folder — no separate installation needed. The
 
 ### Install & Clean Up
 
-Double-click `firestick_cleanup.bat` or run from command prompt:
+Double-click `Firestick-Cleaner-And-Launcher-Replacer.bat` or run from command prompt:
 
 ```
-firestick_cleanup.bat
+Firestick-Cleaner-And-Launcher-Replacer.bat
 ```
 
 ### Revert All Changes
 
 ```
-firestick_cleanup.bat --revert
+Firestick-Cleaner-And-Launcher-Replacer.bat --revert
 ```
 
 This re-enables all disabled packages, removes Projectivy, and restores all settings to stock.
@@ -169,7 +169,7 @@ This ensures the Home button always opens Projectivy instead of the Amazon launc
 
 ```
 Firestick-Cleanup/
-├── firestick_cleanup.bat  # Main script (no dependencies needed)
+├── Firestick-Cleaner-And-Launcher-Replacer.bat  # Main script (no dependencies needed)
 ├── README.md
 └── adb/
     ├── adb.exe            # Android Debug Bridge
