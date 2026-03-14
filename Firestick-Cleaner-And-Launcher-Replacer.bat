@@ -316,11 +316,78 @@ echo.
 pause
 
 :: ============================================================
-:: STEP 5: Disable bloatware (with reboot retry for new unlocks)
+:: STEP 5: Optional apps — ask user what to keep
 :: ============================================================
-set "TOTAL_DISABLED=0"
-set "PASS=0"
-set "BLOAT=com.amazon.tv.acr com.amazon.hybridadidservice com.amazon.client.metrics.api com.amazon.perfc com.amazon.perfcollection com.amazon.device.telemetry.emitter com.amazon.dp.logger com.amazon.wirelessmetrics.service com.amazon.shoptv.client com.amazon.shoptv.firetv.client com.amazon.venezia com.amazon.bueller.photos com.amazon.bueller.music com.amazon.imdb.tv.android.app com.amazon.minitv.android.app com.amazon.gamehub com.amazon.sneakpeek com.amazon.ftv.screensaver com.amazon.storm.lightning.tutorial com.amazon.tmm.tutorial com.amazon.tv.releasenotes com.amazon.audiohome com.amazon.tv.livetv com.amazon.device.rdmapplication com.amazon.logan com.amazon.fireos.cirruscloud com.amazon.ods.kindleconnect com.amazon.cloud9 com.amazon.tahoe com.amazon.aria com.amazon.hedwig com.amazon.whisperplay.service.install com.amazon.tv.support com.amazon.ceviche com.amazon.d3 com.amazon.tv.turnstile com.amazon.avls.experience com.amazon.smarthomemapviewapp com.amazon.tv.ftvambient com.amazon.tv.alexaalerts com.amazon.tv.alexanotifications com.amazon.wifilocker com.amazon.spiderpork com.amazon.tv.notificationcenter com.amazon.firebat com.amazon.ssm com.amazon.ssmsys com.amazon.tv.easyupgrade com.amazon.dpcclient com.amazon.sharingservice.android.client.proxy com.amazon.livedeviceservice com.amazon.prism.android.service com.amazon.privacypassservice com.amazon.tv.legal.notices com.amazon.rtcsessioncontroller"
+echo.
+echo   ========================================
+echo     STEP 5: Choose What to Disable
+echo   ========================================
+echo.
+echo   The following Amazon apps can be disabled. Some you may
+echo   actually use — answer Y/N for each one.
+echo   (Tracking, telemetry, and bloat are always disabled.)
+echo.
+
+set "OPTIONAL_BLOAT="
+
+:: Amazon Appstore
+set /p "OPT_APPSTORE=  Disable Amazon Appstore?              (Y/N): "
+if /i "!OPT_APPSTORE!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.venezia"
+
+:: Amazon Photos
+set /p "OPT_PHOTOS=  Disable Amazon Photos?                 (Y/N): "
+if /i "!OPT_PHOTOS!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.bueller.photos"
+
+:: Amazon Music
+set /p "OPT_MUSIC=  Disable Amazon Music?                  (Y/N): "
+if /i "!OPT_MUSIC!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.bueller.music"
+
+:: Freevee / IMDb TV
+set /p "OPT_FREEVEE=  Disable Freevee / IMDb TV?              (Y/N): "
+if /i "!OPT_FREEVEE!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.imdb.tv.android.app"
+
+:: MiniTV
+set /p "OPT_MINITV=  Disable Amazon MiniTV?                 (Y/N): "
+if /i "!OPT_MINITV!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.minitv.android.app"
+
+:: Game Hub
+set /p "OPT_GAMES=  Disable Amazon Game Hub?               (Y/N): "
+if /i "!OPT_GAMES!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.gamehub"
+
+:: Live TV
+set /p "OPT_LIVETV=  Disable Amazon Live TV?                (Y/N): "
+if /i "!OPT_LIVETV!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.tv.livetv"
+
+:: Alexa Voice Features
+set /p "OPT_ALEXA=  Disable Alexa alerts/notifications?    (Y/N): "
+if /i "!OPT_ALEXA!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.tv.alexaalerts com.amazon.tv.alexanotifications com.amazon.audiohome"
+
+:: Silk Browser
+set /p "OPT_SILK=  Disable Silk Browser (Amazon Cloud9)?  (Y/N): "
+if /i "!OPT_SILK!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.cloud9"
+
+:: Smart Home
+set /p "OPT_SMARTHOME=  Disable Smart Home features?            (Y/N): "
+if /i "!OPT_SMARTHOME!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.smarthomemapviewapp"
+
+:: WhisperPlay (casting)
+set /p "OPT_CAST=  Disable WhisperPlay (casting)?         (Y/N): "
+if /i "!OPT_CAST!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.whisperplay.service.install"
+
+echo.
+echo   [OK] Preferences saved. All tracking/telemetry/bloat will
+echo        always be disabled regardless of choices above.
+echo.
+
+:: ============================================================
+:: STEP 6: Disable bloatware (with reboot retry for new unlocks)
+:: ============================================================
+
+:: Always-disable list: tracking, telemetry, shopping, and background junk
+set "BLOAT=com.amazon.tv.acr com.amazon.hybridadidservice com.amazon.client.metrics.api com.amazon.perfc com.amazon.perfcollection com.amazon.device.telemetry.emitter com.amazon.dp.logger com.amazon.wirelessmetrics.service com.amazon.shoptv.client com.amazon.shoptv.firetv.client com.amazon.sneakpeek com.amazon.ftv.screensaver com.amazon.storm.lightning.tutorial com.amazon.tmm.tutorial com.amazon.tv.releasenotes com.amazon.device.rdmapplication com.amazon.logan com.amazon.fireos.cirruscloud com.amazon.ods.kindleconnect com.amazon.tahoe com.amazon.aria com.amazon.hedwig com.amazon.tv.support com.amazon.ceviche com.amazon.d3 com.amazon.tv.turnstile com.amazon.avls.experience com.amazon.tv.ftvambient com.amazon.wifilocker com.amazon.spiderpork com.amazon.tv.notificationcenter com.amazon.firebat com.amazon.ssm com.amazon.ssmsys com.amazon.tv.easyupgrade com.amazon.dpcclient com.amazon.sharingservice.android.client.proxy com.amazon.livedeviceservice com.amazon.prism.android.service com.amazon.privacypassservice com.amazon.tv.legal.notices com.amazon.rtcsessioncontroller"
+
+:: Append user's optional choices
+set "BLOAT=!BLOAT! !OPTIONAL_BLOAT!"
 
 :: Track packages we've already successfully disabled (across passes)
 echo. >"%TMPFILE%.done"
@@ -332,7 +399,7 @@ set "PASS_PROTECTED=0"
 
 echo.
 echo   ========================================
-echo     STEP 5: Disabling Bloatware (Pass !PASS!^)
+echo     STEP 6: Disabling Bloatware (Pass !PASS!^)
 echo   ========================================
 echo [PASS !PASS!] Starting disable pass... >>"%LOGFILE%"
 
@@ -475,11 +542,11 @@ if !PASS! GTR 1 (
 )
 
 :: ============================================================
-:: STEP 6: Verify
+:: STEP 7: Verify
 :: ============================================================
 echo.
 echo   ========================================
-echo     STEP 6: Verifying Persistence
+echo     STEP 7: Verifying Persistence
 echo   ========================================
 
 :: Check Projectivy installed

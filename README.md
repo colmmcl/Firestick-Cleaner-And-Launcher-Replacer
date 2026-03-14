@@ -7,9 +7,10 @@ Automated tool to replace the ad-filled Amazon Fire TV launcher with [Projectivy
 1. Connects to your Fire TV over ADB (WiFi)
 2. Downloads and installs the latest Projectivy Launcher
 3. Configures Projectivy as the default launcher
-4. Disables 55 Amazon bloatware packages (ads, tracking, telemetry, shopping, unused apps)
-5. Reboots, verifies persistence, and re-applies anything Amazon re-enables
-6. Shows before/after RAM comparison
+4. Asks which optional Amazon apps you want to keep (Music, Photos, Appstore, etc.)
+5. Disables all tracking/telemetry/bloat automatically + your optional choices
+6. Reboots, verifies persistence, and re-applies anything Amazon re-enables
+7. Shows before/after RAM comparison
 
 ## Prerequisites
 
@@ -46,7 +47,12 @@ This re-enables all disabled packages, removes Projectivy, and restores all sett
 
 ## What Gets Disabled
 
-The script disables 55 Amazon packages using `pm disable-user`. Some packages may be protected by Amazon on certain firmware versions — the script handles these gracefully and reports them.
+The script splits packages into two categories:
+
+- **Always disabled** — Tracking, telemetry, ads, and background services. These are always removed with no prompt.
+- **Optional (Y/N prompt)** — Apps you might actually use (Amazon Music, Photos, Appstore, etc.). The script asks you for each one before disabling.
+
+Some packages may be protected by Amazon on certain firmware versions — the script handles these gracefully and reports them.
 
 ### Ads, Tracking & Telemetry
 
@@ -61,18 +67,32 @@ The script disables 55 Amazon packages using `pm disable-user`. Some packages ma
 | `com.amazon.dp.logger` | **Data/Privacy Logger** — logs data and privacy-related events |
 | `com.amazon.wirelessmetrics.service` | **Wireless Metrics** — collects WiFi/Bluetooth usage data |
 
-### Shopping & Amazon Apps
+### Optional Apps (Y/N Prompt)
+
+The script asks you whether to disable each of these — answer N to keep ones you use:
+
+| Package | What It Does |
+|---------|-------------|
+| `com.amazon.venezia` | **Amazon Appstore** — Amazon's app store (you can sideload apps instead) |
+| `com.amazon.bueller.photos` | **Amazon Photos** — cloud photo app |
+| `com.amazon.bueller.music` | **Amazon Music** — music streaming app |
+| `com.amazon.imdb.tv.android.app` | **Freevee / IMDb TV** — Amazon's ad-supported streaming service |
+| `com.amazon.minitv.android.app` | **MiniTV** — Amazon's short-form video service |
+| `com.amazon.gamehub` | **Game Hub** — Amazon's game discovery service |
+| `com.amazon.tv.livetv` | **Live TV** — Amazon's live TV integration |
+| `com.amazon.tv.alexaalerts` | **Alexa Alerts** — Alexa notification alerts on screen |
+| `com.amazon.tv.alexanotifications` | **Alexa Notifications** — Alexa push notifications |
+| `com.amazon.audiohome` | **Audio Home** — Alexa audio/smart home dashboard |
+| `com.amazon.cloud9` | **Silk Browser** — Amazon's web browser |
+| `com.amazon.smarthomemapviewapp` | **Smart Home Map** — Alexa smart home floor plan view |
+| `com.amazon.whisperplay.service.install` | **WhisperPlay** — second-screen/casting service |
+
+### Shopping (Always Disabled)
 
 | Package | What It Does |
 |---------|-------------|
 | `com.amazon.shoptv.client` | **Shop from TV** — Amazon shopping integration |
 | `com.amazon.shoptv.firetv.client` | **Shop from Fire TV** — Fire TV-specific shopping overlay |
-| `com.amazon.venezia` | **Amazon Appstore** — Amazon's app store (you can sideload apps instead) |
-| `com.amazon.imdb.tv.android.app` | **Freevee / IMDb TV** — Amazon's ad-supported streaming service |
-| `com.amazon.minitv.android.app` | **MiniTV** — Amazon's short-form video service |
-| `com.amazon.bueller.photos` | **Amazon Photos** — cloud photo app |
-| `com.amazon.bueller.music` | **Amazon Music** — music streaming app |
-| `com.amazon.gamehub` | **Game Hub** — Amazon's game discovery service |
 
 ### Screensaver & UI Bloat
 
@@ -87,32 +107,20 @@ The script disables 55 Amazon packages using `pm disable-user`. Some packages ma
 | `com.amazon.storm.lightning.tutorial` | **Setup Tutorial** — first-run tutorial (not needed after setup) |
 | `com.amazon.tmm.tutorial` | **Tutorial Manager** — additional tutorial/walkthrough screens |
 
-### Alexa & Voice Services
-
-| Package | What It Does |
-|---------|-------------|
-| `com.amazon.tv.alexaalerts` | **Alexa Alerts** — Alexa notification alerts on screen |
-| `com.amazon.tv.alexanotifications` | **Alexa Notifications** — Alexa push notifications |
-| `com.amazon.audiohome` | **Audio Home** — Alexa audio/smart home dashboard |
-
-### Amazon Background Services
+### Amazon Background Services (Always Disabled)
 
 | Package | What It Does |
 |---------|-------------|
 | `com.amazon.logan` | **Log Agent** — Amazon logging service |
 | `com.amazon.fireos.cirruscloud` | **Cirrus Cloud** — Amazon cloud sync service |
 | `com.amazon.ods.kindleconnect` | **Kindle Connect** — Kindle device linking |
-| `com.amazon.cloud9` | **Cloud9** — Amazon cloud services client |
 | `com.amazon.tahoe` | **Tahoe** — Amazon content delivery service |
 | `com.amazon.aria` | **Aria** — Amazon background service framework |
 | `com.amazon.hedwig` | **Hedwig** — Amazon push notification delivery |
-| `com.amazon.whisperplay.service.install` | **WhisperPlay** — second-screen/casting service |
 | `com.amazon.tv.support` | **TV Support** — Amazon remote support/diagnostics tool |
 | `com.amazon.ceviche` | **Ceviche** — Amazon A/B testing and experimentation framework |
 | `com.amazon.d3` | **D3** — Amazon device data service |
 | `com.amazon.avls.experience` | **AVLS Experience** — Amazon video experience service |
-| `com.amazon.smarthomemapviewapp` | **Smart Home Map** — Alexa smart home floor plan view |
-| `com.amazon.tv.livetv` | **Live TV** — Amazon's live TV integration |
 | `com.amazon.device.rdmapplication` | **Remote Device Management** — allows Amazon to remotely manage your device |
 | `com.amazon.wifilocker` | **WiFi Locker** — shares your WiFi password with Amazon |
 | `com.amazon.spiderpork` | **SpiderPork** — Amazon background analytics service |
