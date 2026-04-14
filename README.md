@@ -60,11 +60,9 @@ Some packages may be protected by Amazon on certain firmware versions — the sc
 |---------|-------------|
 | `com.amazon.tv.acr` | **Automatic Content Recognition** — tracks what you watch on screen, even non-Amazon content |
 | `com.amazon.hybridadidservice` | **Advertising ID Service** — provides a unique ad tracking identifier for targeted ads |
-| `com.amazon.client.metrics.api` | **Metrics API** — sends app usage metrics to Amazon |
 | `com.amazon.perfc` | **Performance Collection** — collects device performance data |
 | `com.amazon.perfcollection` | **Performance Collection Service** — additional performance telemetry |
 | `com.amazon.device.telemetry.emitter` | **Telemetry Emitter** — sends device telemetry data to Amazon servers |
-| `com.amazon.dp.logger` | **Data/Privacy Logger** — logs data and privacy-related events |
 | `com.amazon.wirelessmetrics.service` | **Wireless Metrics** — collects WiFi/Bluetooth usage data |
 
 ### Optional Apps (Y/N Prompt)
@@ -73,6 +71,13 @@ The script asks you whether to disable each of these — answer N to keep ones y
 
 | Package | What It Does |
 |---------|-------------|
+| **Amazon Video services** (group) | **DRM / playback stack** — disables all 6 packages below. Answer **N** if you use Prime Video, Freevee, or MiniTV, or content in those apps will not load. |
+| `com.amazon.avls.experience` | **AVLS** — Amazon Video Licensing Service (DRM) |
+| `com.amazon.prism.android.service` | **Prism** — Amazon's media playback framework |
+| `com.amazon.dp.logger` | **Digital Products Logger** — required by Prime Video for telemetry |
+| `com.amazon.livedeviceservice` | **Live Device Service** — live/streaming device coordination |
+| `com.amazon.rtcsessioncontroller` | **RTC Session Controller** — streaming session manager |
+| `com.amazon.client.metrics.api` | **Metrics API** — required for many Amazon apps to start |
 | `com.amazon.venezia` | **Amazon Appstore** — Amazon's app store (you can sideload apps instead) |
 | `com.amazon.bueller.photos` | **Amazon Photos** — cloud photo app |
 | `com.amazon.bueller.music` | **Amazon Music** — music streaming app |
@@ -120,7 +125,6 @@ The script asks you whether to disable each of these — answer N to keep ones y
 | `com.amazon.tv.support` | **TV Support** — Amazon remote support/diagnostics tool |
 | `com.amazon.ceviche` | **Ceviche** — Amazon A/B testing and experimentation framework |
 | `com.amazon.d3` | **D3** — Amazon device data service |
-| `com.amazon.avls.experience` | **AVLS Experience** — Amazon video experience service |
 | `com.amazon.device.rdmapplication` | **Remote Device Management** — allows Amazon to remotely manage your device |
 | `com.amazon.wifilocker` | **WiFi Locker** — shares your WiFi password with Amazon |
 | `com.amazon.spiderpork` | **SpiderPork** — Amazon background analytics service |
@@ -130,11 +134,8 @@ The script asks you whether to disable each of these — answer N to keep ones y
 | `com.amazon.tv.easyupgrade` | **Easy Upgrade** — prompts to upgrade to newer Fire TV devices |
 | `com.amazon.dpcclient` | **DPC Client** — device policy controller for Amazon management |
 | `com.amazon.sharingservice.android.client.proxy` | **Sharing Service** — Amazon cross-device sharing |
-| `com.amazon.livedeviceservice` | **Live Device Service** — Amazon device status reporting |
-| `com.amazon.prism.android.service` | **Prism** — Amazon UI/display service |
 | `com.amazon.privacypassservice` | **Privacy Pass** — Amazon privacy token service |
 | `com.amazon.tv.legal.notices` | **Legal Notices** — legal disclaimer screens |
-| `com.amazon.rtcsessioncontroller` | **RTC Session Controller** — real-time communication session manager |
 
 ### Protected by Amazon (Cannot Disable Without Root)
 
