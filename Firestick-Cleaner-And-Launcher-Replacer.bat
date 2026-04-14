@@ -330,6 +330,12 @@ echo.
 
 set "OPTIONAL_BLOAT="
 
+:: Amazon Video Services (DRM/playback — breaks Prime Video if disabled)
+echo   Note: answer N to the next question if you use Prime Video,
+echo         Freevee, or MiniTV — disabling these breaks playback.
+set /p "OPT_VIDEO=  Disable Amazon Video services?         (Y/N): "
+if /i "!OPT_VIDEO!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.avls.experience com.amazon.prism.android.service com.amazon.dp.logger com.amazon.livedeviceservice com.amazon.rtcsessioncontroller com.amazon.client.metrics.api"
+
 :: Amazon Appstore
 set /p "OPT_APPSTORE=  Disable Amazon Appstore?              (Y/N): "
 if /i "!OPT_APPSTORE!"=="Y" set "OPTIONAL_BLOAT=!OPTIONAL_BLOAT! com.amazon.venezia"
@@ -384,7 +390,7 @@ echo.
 :: ============================================================
 
 :: Always-disable list: tracking, telemetry, shopping, and background junk
-set "BLOAT=com.amazon.tv.acr com.amazon.hybridadidservice com.amazon.client.metrics.api com.amazon.perfc com.amazon.perfcollection com.amazon.device.telemetry.emitter com.amazon.dp.logger com.amazon.wirelessmetrics.service com.amazon.shoptv.client com.amazon.shoptv.firetv.client com.amazon.sneakpeek com.amazon.ftv.screensaver com.amazon.storm.lightning.tutorial com.amazon.tmm.tutorial com.amazon.tv.releasenotes com.amazon.device.rdmapplication com.amazon.logan com.amazon.fireos.cirruscloud com.amazon.ods.kindleconnect com.amazon.tahoe com.amazon.aria com.amazon.hedwig com.amazon.tv.support com.amazon.ceviche com.amazon.d3 com.amazon.tv.turnstile com.amazon.avls.experience com.amazon.tv.ftvambient com.amazon.wifilocker com.amazon.spiderpork com.amazon.tv.notificationcenter com.amazon.firebat com.amazon.ssm com.amazon.ssmsys com.amazon.tv.easyupgrade com.amazon.dpcclient com.amazon.sharingservice.android.client.proxy com.amazon.livedeviceservice com.amazon.prism.android.service com.amazon.privacypassservice com.amazon.tv.legal.notices com.amazon.rtcsessioncontroller"
+set "BLOAT=com.amazon.tv.acr com.amazon.hybridadidservice com.amazon.perfc com.amazon.perfcollection com.amazon.device.telemetry.emitter com.amazon.wirelessmetrics.service com.amazon.shoptv.client com.amazon.shoptv.firetv.client com.amazon.sneakpeek com.amazon.ftv.screensaver com.amazon.storm.lightning.tutorial com.amazon.tmm.tutorial com.amazon.tv.releasenotes com.amazon.device.rdmapplication com.amazon.logan com.amazon.fireos.cirruscloud com.amazon.ods.kindleconnect com.amazon.tahoe com.amazon.aria com.amazon.hedwig com.amazon.tv.support com.amazon.ceviche com.amazon.d3 com.amazon.tv.turnstile com.amazon.tv.ftvambient com.amazon.wifilocker com.amazon.spiderpork com.amazon.tv.notificationcenter com.amazon.firebat com.amazon.ssm com.amazon.ssmsys com.amazon.tv.easyupgrade com.amazon.dpcclient com.amazon.sharingservice.android.client.proxy com.amazon.privacypassservice com.amazon.tv.legal.notices"
 
 :: Append user's optional choices
 set "BLOAT=!BLOAT! !OPTIONAL_BLOAT!"
