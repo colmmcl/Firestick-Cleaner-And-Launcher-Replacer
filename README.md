@@ -1,5 +1,7 @@
 # Firestick Cleanup
 
+![Firestick Cleanup screenshot](screenshot.jpg)
+
 Automated tool to replace the ad-filled Amazon Fire TV launcher with [Projectivy Launcher](https://github.com/nickaknudson/tv.projectivy.launcher) and disable Amazon bloatware — no root required.
 
 ## What It Does
