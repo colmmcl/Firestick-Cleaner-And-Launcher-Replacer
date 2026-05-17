@@ -14,11 +14,27 @@ Automated tool to replace the ad-filled Amazon Fire TV launcher with [Projectivy
 6. Reboots, verifies persistence, and re-applies anything Amazon re-enables
 7. Shows before/after RAM comparison
 
+## Platforms
+
+Three implementations are included — pick the one for your OS:
+
+| Folder | OS | Entry point | UI |
+|--------|-----|-------------|------|
+| `windows/` | Windows | `Firestick-Cleaner-And-Launcher-Replacer.bat` *or* `WinformVer/` (`FirestickCleanup.exe`) | Console batch or WinForms GUI |
+| `mac/` | macOS | `Firestick-Cleaner-And-Launcher-Replacer.command` | Terminal |
+| `linux/` | Linux | `Firestick-Cleaner-And-Launcher-Replacer.sh` | Terminal |
+
+All three bundle their own ADB binary and produce the same result. The Mac and Linux scripts share identical logic — only the filename and ADB binary differ.
+
 ## Prerequisites
 
 ### ADB (Android Debug Bridge)
 
-ADB is **bundled** in the `adb/` folder — no separate installation needed. The script automatically uses the bundled copy.
+ADB is **bundled** with each platform variant — no separate installation needed:
+
+- Windows: `windows/adb/adb.exe`
+- macOS: `mac/adb/adb`
+- Linux: `linux/adb/adb`
 
 ### Enable ADB on Fire TV
 
@@ -31,21 +47,36 @@ ADB is **bundled** in the `adb/` folder — no separate installation needed. The
 
 ## Usage
 
-### Install & Clean Up
+### Windows
 
-Double-click `Firestick-Cleaner-And-Launcher-Replacer.bat` or run from command prompt:
+Double-click `windows/Firestick-Cleaner-And-Launcher-Replacer.bat` for the console version, or build/run `windows/WinformVer/FirestickCleanup.exe` for the GUI.
+
+To revert: `Firestick-Cleaner-And-Launcher-Replacer.bat --revert`
+
+### macOS
+
+Double-click `mac/Firestick-Cleaner-And-Launcher-Replacer.command` in Finder. On first run, macOS Gatekeeper may block it — right-click → **Open** → confirm. If the script complains that `adb` won't run, clear quarantine on the platform-tools folder:
 
 ```
-Firestick-Cleaner-And-Launcher-Replacer.bat
+xattr -dr com.apple.quarantine mac/adb
 ```
 
-### Revert All Changes
+To revert: `./Firestick-Cleaner-And-Launcher-Replacer.command --revert`
+
+### Linux
+
+From the `linux/` directory:
 
 ```
-Firestick-Cleaner-And-Launcher-Replacer.bat --revert
+chmod +x Firestick-Cleaner-And-Launcher-Replacer.sh adb/adb
+./Firestick-Cleaner-And-Launcher-Replacer.sh
 ```
 
-This re-enables all disabled packages, removes Projectivy, and restores all settings to stock.
+To revert: `./Firestick-Cleaner-And-Launcher-Replacer.sh --revert`
+
+### Revert behavior
+
+The revert flag re-enables all disabled packages, removes Projectivy, and restores all settings to stock.
 
 ## What Gets Disabled
 
@@ -180,13 +211,18 @@ This ensures the Home button always opens Projectivy instead of the Amazon launc
 
 ```
 Firestick-Cleanup/
-├── Firestick-Cleaner-And-Launcher-Replacer.bat  # Main script (no dependencies needed)
 ├── README.md
-└── adb/
-    ├── adb.exe            # Android Debug Bridge
-    ├── AdbWinApi.dll      # Required ADB library
-    ├── AdbWinUsbApi.dll   # Required ADB library
-    └── libwinpthread-1.dll # Required threading library
+├── screenshot.jpg
+├── windows/
+│   ├── Firestick-Cleaner-And-Launcher-Replacer.bat   # Console version
+│   ├── adb/                                          # Bundled Windows ADB
+│   └── WinformVer/                                   # WinForms GUI source
+├── mac/
+│   ├── Firestick-Cleaner-And-Launcher-Replacer.command
+│   └── adb/                                          # Bundled macOS ADB
+└── linux/
+    ├── Firestick-Cleaner-And-Launcher-Replacer.sh
+    └── adb/                                          # Bundled Linux ADB
 ```
 
 ## Notes

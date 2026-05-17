@@ -1,0 +1,11 @@
+*.sh text eol=lf
+*.command text eol=lf
+*.bat text eol=crlf
+mac/adb/adb binary
+linux/adb/adb binary
+windows/adb/adb.exe binary
+windows/adb/*.dll binary
+mac/adb/lib64/* binary
+linux/adb/lib64/* binary
+*.apk binary
+*.jpg binary

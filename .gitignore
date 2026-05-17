@@ -1,2 +1,6 @@
 firestick_cleanup.log
 ProjectivyLauncher-*.apk
+
+# .NET / WinForms build output
+**/bin/
+**/obj/
