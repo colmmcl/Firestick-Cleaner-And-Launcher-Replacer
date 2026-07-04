@@ -231,10 +231,11 @@ if !errorlevel!==0 (
     goto :fail
 )
 
-:: Disable Amazon's default launcher completely
+:: CRITICAL: Disable Amazon's default launcher COMPLETELY
 echo [STEP 4] Disabling Amazon launchers... >>"%LOGFILE%"
 "%ADB%" %TARGET% shell pm disable-user --user 0 com.amazon.tv.launcher >>"%LOGFILE%" 2>&1
 "%ADB%" %TARGET% shell pm disable-user --user 0 com.amazon.tv.selectivepause >>"%LOGFILE%" 2>&1
+"%ADB%" %TARGET% shell pm hide --user 0 com.amazon.tv.launcher >>"%LOGFILE%" 2>&1
 echo   [OK] Amazon launchers disabled
 
 :: Remove any existing HOME role holders
@@ -282,7 +283,7 @@ echo   ^|  2. Grant any requested permissions                     ^|
 echo   ^|  3. Configure AT4K as needed                            ^|
 echo   ^|                                                         ^|
 echo   ^|  AT4K is now set as your Home launcher. The Home button ^|
-echo   ^|  will open AT4K instead of the Amazon launcher.         ^|
+echo   ^|  will open AT4K. Amazon launcher has been disabled.     ^|
 echo   +---------------------------------------------------------+
 echo.
 pause
@@ -362,7 +363,8 @@ echo.
 :: ============================================================
 
 :: Always-disable list: tracking, telemetry, shopping, and background junk
-set "BLOAT=com.amazon.tv.acr com.amazon.hybridadidservice com.amazon.perfc com.amazon.perfcollection com.amazon.device.telemetry.emitter com.amazon.wirelessmetrics.service com.amazon.shoptv.client com.amazon.shoptv.firetv.client com.amazon.sneakpeek com.amazon.ftv.screensaver com.amazon.storm.lightning.tutorial com.amazon.tmm.tutorial com.amazon.tv.releasenotes com.amazon.fireos.cirruscloud com.amazon.device.rdmapplication com.amazon.aria com.amazon.hedwig com.amazon.logan com.amazon.tv.support com.amazon.tv.turnstile com.amazon.tv.ftvambient com.amazon.notificationcenter com.amazon.privacypassservice"
+:: NOTE: com.amazon.tv.settings is KEPT ENABLED for access to Fire TV settings
+set "BLOAT=com.amazon.tv.acr com.amazon.hybridadidservice com.amazon.perfc com.amazon.perfcollection com.amazon.device.telemetry.emitter com.amazon.wirelessmetrics.service com.amazon.shoptv.client com.amazon.shoptv.firetv.client com.amazon.sneakpeek com.amazon.ftv.screensaver com.amazon.storm.lightning.tutorial com.amazon.tmm.tutorial com.amazon.tv.releasenotes com.amazon.fireos.cirruscloud com.amazon.device.rdmapplication com.amazon.aria com.amazon.hedwig com.amazon.logan com.amazon.tv.support com.amazon.tv.turnstile com.amazon.tv.ftvambient com.amazon.notificationcenter com.amazon.privacypassservice com.amazon.device.update.service com.amazon.fvp.update.service"
 
 :: Append user's optional choices
 set "BLOAT=!BLOAT! !OPTIONAL_BLOAT!"
@@ -545,6 +547,24 @@ if !errorlevel!==0 (
     echo   [!!] Accessibility service is NOT active
 )
 
+:: Check Amazon launcher is disabled
+"%ADB%" %TARGET% shell pm list packages -d >"%TMPFILE%" 2>&1
+findstr /C:"com.amazon.tv.launcher" "%TMPFILE%" >nul 2>&1
+if !errorlevel!==0 (
+    echo   [OK] Amazon launcher is disabled
+) else (
+    echo   [!!] Amazon launcher is NOT disabled
+)
+
+:: Check Fire TV Settings is still enabled
+"%ADB%" %TARGET% shell pm list packages >"%TMPFILE%" 2>&1
+findstr /C:"com.amazon.tv.settings" "%TMPFILE%" >nul 2>&1
+if !errorlevel!==0 (
+    echo   [OK] Fire TV Settings is available
+) else (
+    echo   [!!] Fire TV Settings not found
+)
+
 :: Count disabled packages
 set "DISABLED_COUNT=0"
 "%ADB%" %TARGET% shell pm list packages -d >"%TMPFILE%" 2>&1
@@ -593,8 +613,15 @@ echo     ALL DONE - Firestick Cleanup Complete!
 echo   ========================================
 echo.
 echo   AT4K Launcher is installed and configured.
+echo   Amazon launcher has been DISABLED.
+echo   Update services have been DISABLED.
+echo   Fire TV Settings remain AVAILABLE.
 echo   !TOTAL_DISABLED! bloatware packages disabled.
 echo   !RAM_FREED! MB of RAM freed.
+echo.
+echo   ACCESSING FIRE TV SETTINGS:
+echo   Press the Menu button on Fire TV and look for Settings.
+echo   You can also use AT4K's Settings menu.
 echo.
 echo   To revert all changes, run:
 echo     %~nx0 --revert
@@ -663,7 +690,13 @@ for /f "tokens=2 delims=:" %%p in ('type "%TMPFILE%" 2^>nul') do (
 echo   [..] Re-enabling Amazon launchers...
 "%ADB%" %TARGET% shell pm enable com.amazon.tv.launcher >nul 2>&1
 "%ADB%" %TARGET% shell pm enable com.amazon.tv.selectivepause >nul 2>&1
+"%ADB%" %TARGET% shell pm unhide --user 0 com.amazon.tv.launcher >nul 2>&1
 echo   [OK] Amazon launchers re-enabled
+
+:: Re-enable Fire TV Settings
+echo   [..] Re-enabling Fire TV Settings...
+"%ADB%" %TARGET% shell pm enable com.amazon.tv.settings >nul 2>&1
+echo   [OK] Fire TV Settings re-enabled
 
 :: Remove accessibility service
 "%ADB%" %TARGET% shell settings put secure enabled_accessibility_services "" >nul 2>&1
